@@ -2,41 +2,35 @@ package service;
 
 import model.customer.Customer;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 public class CustomerService {
     // static  variable reference of the class instance
     private static CustomerService instance = null;
 
-    ArrayList<Customer> customers = new ArrayList<Customer>();
-    Customer customer;
+    Map<String, Customer> customers = new HashMap<String, Customer>();
 
     private CustomerService() {}
 
     public void addCustomer(String email, String firstName, String lastName) {
         try {
+            checkEmail(email);
             Customer customer = new Customer(firstName, lastName, email);
-            customers.add(customer);
-        } catch (IllegalArgumentException e) {
+            customers.put(customer.getEmail(), customer);
+            System.out.println("New Customer Added");
+        } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
         }
 
     }
 
     public Customer getCustomer(String customerEmail) {
-        // loop through the list of customers
-        // search if the email field equals customerEmail
-        for (Customer customer: customers) {
-            if (customer.getEmail().equals(customerEmail)) {
-                this.customer = customer;
-            }
-        }
-        return customer;
+        return customers.get(customerEmail);
     }
 
     public Collection<Customer> getAllCustomers() {
-        return customers;
+        List<Customer> allCustomers = new ArrayList<Customer>(customers.values());
+        return allCustomers;
     }
 
     public static CustomerService getInstance() {
@@ -44,6 +38,12 @@ public class CustomerService {
             instance = new CustomerService();
         }
         return instance;
+    }
+
+    private void checkEmail(String email) throws Exception {
+        if (customers.containsKey(email)) {
+            throw new IllegalArgumentException("Email Already Exist");
+        }
     }
 
 }

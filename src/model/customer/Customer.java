@@ -22,6 +22,7 @@ public class Customer {
         return pattern.matcher(email).matches();
     }
 
+
     public String getFirstName() {
         return firstName;
     }
