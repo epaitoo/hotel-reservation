@@ -10,15 +10,15 @@ import java.util.List;
 
 public class AdminResource {
     private static AdminResource instance = null;
-    private CustomerService customerService;
-    private ReservationService reservationService;
+    CustomerService customerService;
+    ReservationService reservationService;
 
     private AdminResource() {
         this.customerService = CustomerService.getInstance();
         this.reservationService = ReservationService.getInstance();
     }
 
-    private static AdminResource getInstance() {
+    public static AdminResource getInstance() {
         if (instance == null) {
             instance = new AdminResource();
         }
